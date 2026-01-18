@@ -1,0 +1,1055 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NextGenRomania – Store</title>
+  <meta name="description" content="NextGenRomania – Cars, VIP, and Houses." />
+
+  <style>
+    :root{
+      --bg:#070a10;
+      --panel:rgba(10,14,22,.62);
+      --panel2:rgba(10,14,22,.42);
+      --text:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.68);
+      --shadow:0 20px 60px rgba(0,0,0,.55);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial;
+      color:var(--text);
+      background:var(--bg);
+      overflow-x:hidden;
+    }
+
+    /* Background */
+    .bg{
+      position:fixed; inset:0; z-index:-2;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.65) 0%, rgba(0,0,0,.52) 55%, rgba(0,0,0,.72) 100%),
+        radial-gradient(1200px 600px at 20% 20%, rgba(57,209,255,.20), transparent 60%),
+        radial-gradient(900px 500px at 80% 30%, rgba(124,92,255,.18), transparent 60%),
+        url("bilder/background.png") center/cover no-repeat;
+      filter:saturate(1.1) contrast(1.18);
+      transform:scale(1.02);
+    }
+    .bg::after{
+      content:"";
+      position:absolute; inset:0;
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      background: rgba(0,0,0,.18);
+    }
+
+    .wrap{max-width:1200px; margin:0 auto; padding:28px 18px 64px;}
+
+    header{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:14px; padding:10px 4px 26px; flex-wrap:wrap;
+    }
+    .brand{display:flex; align-items:center; gap:12px; min-width:240px;}
+
+    /* Logo uses your background image */
+    .logo{
+      width:46px; height:46px; border-radius:14px;
+      background-image:url("bilder/background.png");
+      background-size:cover;
+      background-position:center;
+      box-shadow:0 0 0 1px rgba(255,255,255,.12), 0 18px 40px rgba(0,0,0,.45);
+      position:relative; overflow:hidden;
+      display:grid; place-items:center;
+      font-weight:900; letter-spacing:.5px;
+      color:rgba(255,255,255,.95);
+      text-shadow:0 2px 10px rgba(0,0,0,.85);
+    }
+    .logo::after{
+      content:"";
+      position:absolute; inset:0;
+      background:linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.55));
+      pointer-events:none;
+    }
+    .logo span{position:relative; z-index:1;}
+
+    .brand h1{font-size:18px; margin:0; line-height:1.2;}
+    .brand p{margin:2px 0 0; color:var(--muted); font-size:12.5px;}
+
+    .top-actions{display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end;}
+    .chip{
+      padding:10px 12px; border-radius:999px;
+      background:rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.10);
+      color:var(--muted);
+      font-size:13px;
+      display:flex; align-items:center; gap:10px;
+    }
+
+    .btn{
+      min-height:42px;
+      padding:11px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background:linear-gradient(135deg, rgba(57,209,255,.22), rgba(124,92,255,.18));
+      color:var(--text);
+      cursor:pointer;
+      box-shadow:0 12px 30px rgba(0,0,0,.35);
+      font-weight:800;
+      text-decoration:none;
+      display:inline-flex; align-items:center; gap:10px;
+      user-select:none;
+    }
+    .btn:hover{filter:brightness(1.06)}
+    .btn:active{transform:translateY(1px)}
+
+    .hero{
+      border-radius:var(--radius);
+      background:linear-gradient(135deg, rgba(10,14,22,.78), rgba(10,14,22,.52));
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .hero::before{
+      content:"";
+      position:absolute; inset:-60px;
+      background:
+        radial-gradient(700px 300px at 10% 20%, rgba(57,209,255,.22), transparent 60%),
+        radial-gradient(700px 300px at 90% 20%, rgba(124,92,255,.18), transparent 60%);
+      pointer-events:none;
+    }
+    .hero-inner{position:relative; padding:26px 22px 18px; display:grid; gap:14px;}
+    .hero-title{margin:0; font-size:28px; letter-spacing:.2px;}
+    .hero-sub{margin:0; color:var(--muted); max-width:860px; line-height:1.5; font-size:14.5px;}
+
+    .controls{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:6px;}
+    .input,.select{
+      background:rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.12);
+      color:var(--text);
+      border-radius:14px;
+      padding:11px 12px;
+      outline:none;
+      min-height:42px;
+    }
+    .input{flex:1 1 260px;}
+    .select{flex:0 0 190px; cursor:pointer;}
+
+    .sections{display:grid; grid-template-columns:1fr; gap:18px; margin-top:18px;}
+
+    .section{
+      border-radius:var(--radius);
+      background:var(--panel2);
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .section-head{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; padding:16px 16px 10px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      background:rgba(0,0,0,.16);
+    }
+    .section-head h2{margin:0; font-size:16px; letter-spacing:.2px;}
+    .count{color:var(--muted); font-size:13px;}
+
+    .grid{
+      padding:14px;
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:12px;
+    }
+
+    .card{
+      border-radius:16px;
+      background:var(--panel);
+      border:1px solid rgba(255,255,255,.10);
+      overflow:hidden;
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      box-shadow:0 18px 40px rgba(0,0,0,.35);
+      min-height:280px;
+    }
+    .card::before{
+      content:"";
+      position:absolute; inset:-40px;
+      background:
+        radial-gradient(250px 120px at 25% 25%, rgba(57,209,255,.14), transparent 60%),
+        radial-gradient(220px 120px at 80% 40%, rgba(124,92,255,.12), transparent 60%);
+      pointer-events:none;
+    }
+
+    .thumb{
+      position:relative;
+      width:100%;
+      aspect-ratio:16/9;
+      background:rgba(0,0,0,.25);
+      border-bottom:1px solid rgba(255,255,255,.08);
+      overflow:hidden;
+      cursor:zoom-in;
+    }
+    .thumb img{
+      width:100%; height:100%;
+      object-fit:cover;
+      display:block;
+      filter:contrast(1.05) saturate(1.05);
+      transform:scale(1.01);
+    }
+    .thumb::after{
+      content:"";
+      position:absolute; inset:0;
+      background:linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.45));
+      pointer-events:none;
+    }
+    .thumb .hint{
+      position:absolute;
+      left:10px; bottom:10px;
+      font-size:12px;
+      color:rgba(255,255,255,.92);
+      background:rgba(0,0,0,.38);
+      border:1px solid rgba(255,255,255,.12);
+      padding:6px 8px;
+      border-radius:999px;
+      z-index:2;
+      pointer-events:none;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+    }
+    .hint .dot{
+      width:7px; height:7px; border-radius:99px;
+      background:rgba(57,209,255,.95);
+      box-shadow:0 0 0 1px rgba(255,255,255,.10);
+    }
+
+    .card-top{
+      position:relative;
+      padding:12px 12px 0;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .title{margin:0; font-size:14.5px; font-weight:900; letter-spacing:.15px;}
+    .meta{margin:3px 0 0; color:var(--muted); font-size:12.5px; line-height:1.35;}
+    .badge{
+      position:relative;
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:12px;
+      color:rgba(255,255,255,.88);
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      white-space:nowrap;
+    }
+    .spacer{flex:1 1 auto;}
+
+    .card-bottom{
+      position:relative;
+      padding:10px 12px 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      border-top:1px solid rgba(255,255,255,.08);
+      background:rgba(0,0,0,.12);
+    }
+    .price{font-weight:900; letter-spacing:.2px; font-size:14px;}
+    .price small{color:var(--muted); font-weight:700; margin-left:6px; font-size:12px;}
+    .actions{display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:flex-end;}
+
+    .pill{
+      padding:8px 10px;
+      border-radius:999px;
+      background:rgba(57,209,255,.10);
+      border:1px solid rgba(57,209,255,.20);
+      color:rgba(255,255,255,.90);
+      font-size:12px;
+      cursor:pointer;
+      user-select:none;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    .pill:hover{filter:brightness(1.06)}
+
+    /* VIP styling */
+    .vip-card{position:relative; overflow:hidden;}
+    .vip-top{
+      position:relative;
+      padding:14px 14px 0;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .vip-icon{
+      width:40px; height:40px;
+      border-radius:14px;
+      display:grid;
+      place-items:center;
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow:0 18px 45px rgba(0,0,0,.35);
+      font-size:18px;
+      font-weight:900;
+      user-select:none;
+    }
+    .vip-pill{
+      margin-top:10px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:12px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);
+      color:rgba(255,255,255,.88);
+    }
+    .vip-border{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      border-radius:16px;
+    }
+    .vip-bronze .vip-icon{background:linear-gradient(135deg, rgba(205,127,50,.35), rgba(205,127,50,.10));}
+    .vip-silver .vip-icon{background:linear-gradient(135deg, rgba(192,192,192,.35), rgba(192,192,192,.10));}
+    .vip-gold .vip-icon{background:linear-gradient(135deg, rgba(255,215,0,.30), rgba(255,215,0,.10));}
+    .vip-diamond .vip-icon{background:linear-gradient(135deg, rgba(120,210,255,.30), rgba(124,92,255,.18));}
+    .vip-supreme .vip-icon{background:linear-gradient(135deg, rgba(255,80,160,.26), rgba(124,92,255,.18));}
+
+    .vip-bronze .vip-border{box-shadow:inset 0 0 0 1px rgba(205,127,50,.25);}
+    .vip-silver .vip-border{box-shadow:inset 0 0 0 1px rgba(192,192,192,.25);}
+    .vip-gold .vip-border{box-shadow:inset 0 0 0 1px rgba(255,215,0,.25);}
+    .vip-diamond .vip-border{box-shadow:inset 0 0 0 1px rgba(120,210,255,.25);}
+    .vip-supreme .vip-border{box-shadow:inset 0 0 0 1px rgba(255,80,160,.25);}
+
+    /* Houses note */
+    .note{
+      padding:14px 16px;
+      border-top:1px solid rgba(255,255,255,.08);
+      color:var(--muted);
+      font-size:12.5px;
+      line-height:1.45;
+      background:rgba(0,0,0,.12);
+    }
+
+    footer{
+      margin-top:18px;
+      color:var(--muted);
+      font-size:12.5px;
+      text-align:center;
+      padding:10px 6px 0;
+    }
+
+    /* ===== Modals ===== */
+    .overlay{
+      position:fixed; inset:0;
+      background:rgba(0,0,0,.72);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      z-index:9999;
+    }
+    .overlay.open{display:flex;}
+
+    .modal{
+      width:min(520px, 100%);
+      border-radius:18px;
+      background:rgba(10,14,22,.92);
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:0 25px 80px rgba(0,0,0,.70);
+      overflow:hidden;
+      position:relative;
+    }
+    .modal-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      padding:16px 16px 10px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.18);
+    }
+    .modal-head h3{margin:0; font-size:15px; font-weight:900; letter-spacing:.2px;}
+    .modal-head p{margin:4px 0 0; color:var(--muted); font-size:12.5px; line-height:1.35;}
+    .close-x{
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      border-radius:12px;
+      cursor:pointer;
+      padding:8px 10px;
+      font-weight:900;
+    }
+    .modal-body{padding:14px 16px 16px; display:grid; gap:12px;}
+    .qr-wrap{
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      padding:12px;
+      display:grid;
+      place-items:center;
+    }
+    .qr-wrap img{
+      width:min(360px, 100%);
+      height:auto;
+      display:block;
+      border-radius:12px;
+    }
+    .modal-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .muted-note{color:var(--muted); font-size:12.5px; line-height:1.4;}
+    .linkbtn{
+      min-height:42px;
+      padding:11px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: linear-gradient(135deg, rgba(57,209,255,.22), rgba(124,92,255,.18));
+      color:var(--text);
+      cursor:pointer;
+      font-weight:900;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      user-select:none;
+    }
+
+    .img-modal{
+      width:min(1000px, 100%);
+      border-radius:18px;
+      background:rgba(10,14,22,.92);
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:0 25px 80px rgba(0,0,0,.70);
+      overflow:hidden;
+    }
+    .img-wrap{
+      position:relative;
+      padding:14px;
+      display:grid;
+      place-items:center;
+      background:rgba(0,0,0,.20);
+    }
+    .img-wrap img{
+      width:100%;
+      height:auto;
+      max-height: 72vh;
+      object-fit: contain;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.25);
+      cursor: zoom-out;
+    }
+
+    .navbtn{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      width:44px;
+      height:44px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.35);
+      color:rgba(255,255,255,.92);
+      font-size:18px;
+      font-weight:900;
+      cursor:pointer;
+      display:grid;
+      place-items:center;
+      user-select:none;
+    }
+    .navbtn:hover{filter:brightness(1.08)}
+    .navbtn:active{transform:translateY(-50%) scale(.98)}
+    .nav-left{left:14px}
+    .nav-right{right:14px}
+    .navbtn[disabled]{opacity:.35; cursor:not-allowed}
+
+    .dots{
+      position:absolute;
+      left:50%;
+      bottom:18px;
+      transform:translateX(-50%);
+      display:flex;
+      gap:8px;
+      padding:8px 10px;
+      border-radius:999px;
+      background:rgba(0,0,0,.35);
+      border:1px solid rgba(255,255,255,.12);
+    }
+    .dot{
+      width:8px; height:8px;
+      border-radius:99px;
+      background:rgba(255,255,255,.35);
+      border:1px solid rgba(255,255,255,.10);
+    }
+    .dot.active{background:rgba(57,209,255,.95);}
+
+    @media (max-width:980px){ .grid{grid-template-columns:repeat(2, minmax(0,1fr));} }
+    @media (max-width:640px){
+      header{flex-direction:column; align-items:flex-start;}
+      .top-actions{justify-content:flex-start;}
+      .hero-title{font-size:22px;}
+      .grid{grid-template-columns:1fr;}
+      .select{flex:1 1 180px;}
+      .navbtn{width:40px; height:40px; border-radius:14px;}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo"><span>NG</span></div>
+        <div>
+          <h1>NextGenRomania</h1>
+          <p>Cars • VIP • Houses – all in one place</p>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <div class="chip" title="Status">
+          <span style="width:9px;height:9px;border-radius:999px;background:rgba(57,209,255,.9);display:inline-block;"></span>
+          Store / prices up to date
+        </div>
+        <a class="btn" href="https://discord.gg/nextgenro" target="_blank" rel="noopener">Open Discord</a>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-inner">
+        <h2 class="hero-title">Store & Prices</h2>
+        <p class="hero-sub">
+          Use <b>Discord</b> (top right) for support. The <b>Buy</b> button shows your <b>Revolut QR</b>.
+          Click an image to open the gallery (use arrows ◀ ▶).
+        </p>
+
+        <div class="controls">
+          <input id="search" class="input" type="search" placeholder="Search… e.g. 'Bugatti', 'VIP Gold', 'Houses'">
+          <select id="category" class="select">
+            <option value="all">All categories</option>
+            <option value="cars">Cars</option>
+            <option value="vips">VIP</option>
+            <option value="houses">Houses</option>
+          </select>
+          <select id="sort" class="select">
+            <option value="recommended">Sort: Recommended</option>
+            <option value="priceAsc">Price: Low → High</option>
+            <option value="priceDesc">Price: High → Low</option>
+            <option value="nameAsc">Name: A → Z</option>
+          </select>
+          <button id="reset" class="btn" type="button">Reset</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="sections" id="sections"></div>
+
+    <footer>
+      © <span id="year"></span> NextGenRomania — Prices may change.
+    </footer>
+  </div>
+
+  <!-- Revolut QR Modal -->
+  <div id="payOverlay" class="overlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="payTitle">
+      <div class="modal-head">
+        <div>
+          <h3 id="payTitle">Pay with Revolut</h3>
+          <p id="payInfo">Scan the QR code and enter the amount.</p>
+        </div>
+        <button class="close-x" id="payClose" type="button">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="qr-wrap">
+          <img id="qrImg" src="bilder/revolut-qr.png" alt="Revolut QR Code">
+        </div>
+
+        <div class="modal-actions">
+          <div class="muted-note">
+            Tip: After payment, open a Discord ticket and send a screenshot.
+          </div>
+          <a class="linkbtn" id="revolutOpen" href="https://revolut.me/nextgenrp" target="_blank" rel="noopener">Open Revolut</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gallery Modal -->
+  <div id="imgOverlay" class="overlay" aria-hidden="true">
+    <div class="img-modal" role="dialog" aria-modal="true" aria-labelledby="imgTitle">
+      <div class="modal-head">
+        <div>
+          <h3 id="imgTitle">Preview</h3>
+          <p id="imgInfo">Use arrows ◀ ▶ or click buttons. ESC closes.</p>
+        </div>
+        <button class="close-x" id="imgClose" type="button">✕</button>
+      </div>
+      <div class="img-wrap">
+        <button id="prevBtn" class="navbtn nav-left" type="button" aria-label="Previous image">‹</button>
+        <button id="nextBtn" class="navbtn nav-right" type="button" aria-label="Next image">›</button>
+        <img id="imgFull" src="" alt="Preview image">
+        <div id="dots" class="dots" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const REVOLUT_URL = "https://revolut.me/nextgenrp";
+    const QR_IMAGE = "bilder/revolut-qr.png";
+    const CURRENCY = "€";
+
+    // IMPORTANT:
+    // - Houses image filename (no folders in name): bilder-houses.jpg
+    // - It should be placed next to index.html OR in the same folder the browser can access.
+    //   (If it's next to index.html, this path is correct.)
+    const HOUSES_IMAGE = "bilder-houses.jpg";
+
+    const DATA = {
+      cars: [
+        { name: "VW Arteon", price: 30, tag: "Car", gallery: ["bilder/autos/vw-arteon.jpg"] },
+        { name: "Königsegg Jesko", price: 40, tag: "Car", gallery: ["bilder/autos/koenigsegg-jesko.jpg"] },
+        { name: "Lamborghini Temerario", price: 50, tag: "Car", gallery: ["bilder/autos/lamborghini-temerario.jpg"] },
+        { name: "Mercedes Maybach S500", price: 30, tag: "Car", gallery: ["bilder/autos/mercedes-maybach-s500.jpg"] },
+        { name: "Rolls Royce Phantom", price: 40, tag: "Car", gallery: ["bilder/autos/rolls-royce-phantom.jpg"] },
+        { name: "Bentley Bentayga", price: 25, tag: "Car", gallery: ["bilder/autos/bentley-bentayga.jpg"] },
+        { name: "Ferrari SF90", price: 30, tag: "Car", gallery: ["bilder/autos/ferrari-sf90.jpg"] },
+        { name: "Bentley Flying Spur", price: 35, tag: "Car", gallery: ["bilder/autos/bentley-flying-spur.jpg"] },
+        { name: "Cadillac Escalade", price: 20, tag: "Car", gallery: ["bilder/autos/cadillac-escalade.jpg"] },
+        { name: "BMW M4", price: 15, tag: "Car", gallery: ["bilder/autos/bmw-m4.jpg"] },
+        { name: "Chevrolet Silverado", price: 40, tag: "Car", gallery: ["bilder/autos/chevrolet-silverado.jpg"] },
+        { name: "Chevrolet Impala", price: 25, tag: "Car", gallery: ["bilder/autos/chevrolet-impala.jpg"] },
+        { name: "Bugatti La Voiture Noire", price: 60, tag: "Car", gallery: ["bilder/autos/bugatti-la-voiture-noire.jpg"] },
+        { name: "Pagani", price: 50, tag: "Car", gallery: ["bilder/autos/pagani.jpg"] },
+
+        { name: "Mercedes GLE 63s AMG", price: 15, tag: "Car", gallery: [
+          "bilder/autos/mercedes-gle-63s-amg-1.jpg",
+          "bilder/autos/mercedes-gle-63s-amg-2.jpg",
+          "bilder/autos/mercedes-gle-63s-amg-3.jpg"
+        ]},
+        { name: "Ferrari Roma Mansory", price: 40, tag: "Car", gallery: [
+          "bilder/autos/ferrari-roma-mansory-1.jpg",
+          "bilder/autos/ferrari-roma-mansory-2.jpg"
+        ]},
+        { name: "BMW X6 M60", price: 35, tag: "Car", gallery: [
+          "bilder/autos/bmw-x6-m60-1.jpg",
+          "bilder/autos/bmw-x6-m60-2.jpg"
+        ]},
+        { name: "BMW M4 Competition", price: 35, tag: "Car", gallery: [
+          "bilder/autos/bmw-m4-competition-1.jpg"
+        ]},
+        { name: "Mercedes Maybach G900 Mansory", price: 35, tag: "Car", gallery: [
+          "bilder/autos/mercedes-maybach-g900-mansory-1.jpg"
+        ]}
+      ],
+
+      vips: [
+        { name: "VIP Bronze", tier: "bronze", price: 10, tag: "VIP" },
+        { name: "VIP Silver", tier: "silver", price: 15, tag: "VIP" },
+        { name: "VIP Gold", tier: "gold", price: 20, tag: "VIP" },
+        { name: "VIP Diamond", tier: "diamond", price: 30, tag: "VIP" },
+        { name: "VIP Supreme", tier: "supreme", price: 40, tag: "VIP" }
+      ],
+
+      houses: [
+        {
+          name: "Houses (examples)",
+          price: null,
+          tag: "House",
+          gallery: [HOUSES_IMAGE]
+        }
+      ]
+    };
+
+    // UI refs
+    const sectionsEl = document.getElementById("sections");
+    const searchEl = document.getElementById("search");
+    const categoryEl = document.getElementById("category");
+    const sortEl = document.getElementById("sort");
+    const resetEl = document.getElementById("reset");
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Payment modal refs
+    const payOverlay = document.getElementById("payOverlay");
+    const payClose = document.getElementById("payClose");
+    const payInfo = document.getElementById("payInfo");
+    const qrImg = document.getElementById("qrImg");
+    const revolutOpen = document.getElementById("revolutOpen");
+    qrImg.src = QR_IMAGE;
+    revolutOpen.href = REVOLUT_URL;
+
+    // Gallery modal refs
+    const imgOverlay = document.getElementById("imgOverlay");
+    const imgClose = document.getElementById("imgClose");
+    const imgFull = document.getElementById("imgFull");
+    const imgTitle = document.getElementById("imgTitle");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const dotsEl = document.getElementById("dots");
+
+    const fmtPrice = (n) => `${Number(n).toLocaleString("en-US")} ${CURRENCY}`;
+    const normalize = (s) => (s || "").toString().toLowerCase().trim();
+
+    // Gallery state
+    let currentGallery = [];
+    let currentIndex = 0;
+    let currentTitle = "";
+
+    function getAllItems(){
+      return [
+        ...DATA.cars.map(x => ({...x, _cat:"cars"})),
+        ...DATA.vips.map(x => ({...x, _cat:"vips"})),
+        ...DATA.houses.map(x => ({...x, _cat:"houses"}))
+      ];
+    }
+
+    function sortItems(items, sortKey){
+      const copy = [...items];
+      if (sortKey === "priceAsc") copy.sort((a,b) => (a.price ?? 999999) - (b.price ?? 999999));
+      if (sortKey === "priceDesc") copy.sort((a,b) => (b.price ?? -999999) - (a.price ?? -999999));
+      if (sortKey === "nameAsc") copy.sort((a,b) => a.name.localeCompare(b.name, "en"));
+      return copy;
+    }
+
+    function filterItems(){
+      const q = normalize(searchEl.value);
+      const cat = categoryEl.value;
+      const sortKey = sortEl.value;
+
+      let items = getAllItems();
+      if (cat !== "all") items = items.filter(i => i._cat === cat);
+
+      if (q){
+        items = items.filter(i => normalize(`${i.name} ${i.tag||""}`).includes(q));
+      }
+      return sortItems(items, sortKey);
+    }
+
+    // Revolut modal
+    function openPayModal(itemName, itemPrice){
+      payInfo.textContent = `${itemName} — ${fmtPrice(itemPrice)}. Scan the QR code (or open Revolut) and enter the amount.`;
+      payOverlay.classList.add("open");
+      payOverlay.setAttribute("aria-hidden", "false");
+    }
+    function closePayModal(){
+      payOverlay.classList.remove("open");
+      payOverlay.setAttribute("aria-hidden", "true");
+    }
+
+    // Gallery modal
+    function renderDots(){
+      dotsEl.innerHTML = "";
+      const showDots = currentGallery.length > 1;
+      dotsEl.style.display = showDots ? "flex" : "none";
+      if (!showDots) return;
+
+      currentGallery.forEach((_, idx) => {
+        const d = document.createElement("div");
+        d.className = "dot" + (idx === currentIndex ? " active" : "");
+        d.addEventListener("click", () => setGalleryIndex(idx));
+        dotsEl.appendChild(d);
+      });
+    }
+
+    function setGalleryIndex(idx){
+      if (!currentGallery.length) return;
+      currentIndex = ((idx % currentGallery.length) + currentGallery.length) % currentGallery.length;
+      imgFull.src = currentGallery[currentIndex];
+      imgTitle.textContent = `${currentTitle} (${currentIndex + 1}/${currentGallery.length})`;
+
+      prevBtn.disabled = currentGallery.length <= 1;
+      nextBtn.disabled = currentGallery.length <= 1;
+      renderDots();
+    }
+
+    function openGallery(galleryArr, title, startIndex=0){
+      currentGallery = Array.isArray(galleryArr) && galleryArr.length ? galleryArr : [];
+      currentTitle = title || "Preview";
+      imgOverlay.classList.add("open");
+      imgOverlay.setAttribute("aria-hidden","false");
+      setGalleryIndex(startIndex);
+    }
+
+    function closeGallery(){
+      imgOverlay.classList.remove("open");
+      imgOverlay.setAttribute("aria-hidden","true");
+      imgFull.src = "";
+      currentGallery = [];
+      currentIndex = 0;
+      currentTitle = "";
+    }
+
+    // Close handlers
+    payClose.addEventListener("click", closePayModal);
+    payOverlay.addEventListener("click", (e) => { if (e.target === payOverlay) closePayModal(); });
+
+    imgClose.addEventListener("click", closeGallery);
+    imgOverlay.addEventListener("click", (e) => { if (e.target === imgOverlay) closeGallery(); });
+    imgFull.addEventListener("click", closeGallery);
+
+    prevBtn.addEventListener("click", () => setGalleryIndex(currentIndex - 1));
+    nextBtn.addEventListener("click", () => setGalleryIndex(currentIndex + 1));
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape"){
+        closePayModal();
+        closeGallery();
+      }
+      if (imgOverlay.classList.contains("open")){
+        if (e.key === "ArrowLeft") setGalleryIndex(currentIndex - 1);
+        if (e.key === "ArrowRight") setGalleryIndex(currentIndex + 1);
+      }
+    });
+
+    function vipThemeClass(tier){
+      if (tier === "bronze") return "vip-bronze";
+      if (tier === "silver") return "vip-silver";
+      if (tier === "gold") return "vip-gold";
+      if (tier === "diamond") return "vip-diamond";
+      if (tier === "supreme") return "vip-supreme";
+      return "vip-bronze";
+    }
+    function vipIcon(tier){
+      if (tier === "bronze") return "B";
+      if (tier === "silver") return "S";
+      if (tier === "gold") return "G";
+      if (tier === "diamond") return "D";
+      if (tier === "supreme") return "★";
+      return "V";
+    }
+
+    function render(){
+      const items = filterItems();
+      const grouped = {
+        cars: items.filter(i => i._cat==="cars"),
+        vips: items.filter(i => i._cat==="vips"),
+        houses: items.filter(i => i._cat==="houses")
+      };
+
+      sectionsEl.innerHTML = [
+        renderCarsSection("Cars", grouped.cars),
+        renderVipSection("VIP", grouped.vips),
+        renderHousesSection("Houses", grouped.houses)
+      ].join("");
+
+      attachHandlers();
+    }
+
+    function renderCarsSection(title, items){
+      const empty = noResultsCard(title, "No results", "Adjust your search / filters.");
+
+      const cards = items.length ? items.map(item => {
+        const gallery = Array.isArray(item.gallery) ? item.gallery : [];
+        const preview = gallery[0] || "";
+        const hint = gallery.length > 1 ? `Photos: ${gallery.length}` : `Click to enlarge`;
+        const galleryStr = gallery.join("|"); // Gallery fix (no JSON)
+
+        return `
+          <div class="card">
+            <div class="thumb imgbtn"
+                 data-gallery="${escapeAttr(galleryStr)}"
+                 data-title="${escapeAttr(item.name)}">
+              <img src="${escapeAttr(preview)}" alt="${escapeAttr(item.name)}">
+              <div class="hint"><span class="dot"></span>${escapeHtml(hint)}</div>
+            </div>
+
+            <div class="card-top">
+              <div>
+                <p class="title">${escapeHtml(item.name)}</p>
+                <p class="meta"></p>
+              </div>
+              <span class="badge">${escapeHtml(item.tag || title)}</span>
+            </div>
+
+            <div class="spacer"></div>
+
+            <div class="card-bottom">
+              <div class="price">${fmtPrice(item.price)} <small>Price</small></div>
+              <div class="actions">
+                <button class="pill buybtn" type="button"
+                  data-name="${escapeAttr(item.name)}"
+                  data-price="${escapeAttr(item.price)}">Buy</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("") : empty;
+
+      return sectionWrap(title, items.length, cards);
+    }
+
+    function renderVipSection(title, items){
+      const empty = noResultsCard(title, "No results", "Adjust your search / filters.");
+
+      const cards = items.length ? items.map(item => {
+        const theme = vipThemeClass(item.tier);
+        const icon = vipIcon(item.tier);
+
+        return `
+          <div class="card vip-card ${theme}">
+            <div class="vip-border"></div>
+
+            <div class="vip-top">
+              <div>
+                <p class="title">${escapeHtml(item.name)}</p>
+                <div class="vip-pill">VIP Tier • ${escapeHtml((item.tier || "").toUpperCase())}</div>
+              </div>
+              <div class="vip-icon" title="${escapeAttr(item.tier || "vip")}">${escapeHtml(icon)}</div>
+            </div>
+
+            <div class="spacer"></div>
+
+            <div class="card-bottom">
+              <div class="price">${fmtPrice(item.price)} <small>Price</small></div>
+              <div class="actions">
+                <button class="pill buybtn" type="button"
+                  data-name="${escapeAttr(item.name)}"
+                  data-price="${escapeAttr(item.price)}">Buy</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("") : empty;
+
+      return sectionWrap(title, items.length, cards);
+    }
+
+    function renderHousesSection(title, items){
+      const empty = noResultsCard(title, "No results", "Adjust your search / filters.");
+
+      const cards = items.length ? items.map(item => {
+        const gallery = Array.isArray(item.gallery) ? item.gallery : [];
+        const preview = gallery[0] || HOUSES_IMAGE;
+        const hint = gallery.length > 1 ? `Photos: ${gallery.length}` : `Click to enlarge`;
+        const galleryStr = gallery.join("|");
+
+        return `
+          <div class="card">
+            <div class="thumb imgbtn"
+                 data-gallery="${escapeAttr(galleryStr)}"
+                 data-title="${escapeAttr(title)}">
+              <img src="${escapeAttr(preview)}" alt="${escapeAttr(title)}">
+              <div class="hint"><span class="dot"></span>${escapeHtml(hint)}</div>
+            </div>
+
+            <div class="card-top">
+              <div>
+                <p class="title">Houses</p>
+                <p class="meta">Examples / previews</p>
+              </div>
+              <span class="badge">House</span>
+            </div>
+
+            <div class="spacer"></div>
+
+            <div class="card-bottom">
+              <div class="price">40–120 ${CURRENCY} <small>Range</small></div>
+              <div class="actions">
+                <a class="pill" href="https://discord.gg/nextgenro" target="_blank" rel="noopener">Contact on Discord</a>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("") : empty;
+
+      const sectionHtml = sectionWrap(title, items.length, cards);
+
+      const note = `
+        <div class="note">
+          <b>House prices vary between 40–120 EUR</b>, depending on the house. Please contact us on Discord for the final price decision.
+          <br><br>
+          We also have <b>many more houses</b> available.
+        </div>
+      `;
+
+      // Insert note directly under the houses section content
+      return sectionHtml.replace('</section>', note + '</section>');
+    }
+
+    function sectionWrap(title, count, innerHtml){
+      return `
+        <section class="section">
+          <div class="section-head">
+            <h2>${escapeHtml(title)}</h2>
+            <div class="count">${count} item${count===1?"":"s"}</div>
+          </div>
+          <div class="grid">${innerHtml}</div>
+        </section>
+      `;
+    }
+
+    function noResultsCard(title, t, m){
+      return `
+        <div class="grid">
+          <div class="card" style="grid-column:1/-1; min-height:auto;">
+            <div class="card-top">
+              <div>
+                <p class="title">${escapeHtml(t)}</p>
+                <p class="meta">${escapeHtml(m)}</p>
+              </div>
+              <span class="badge">${escapeHtml(title)}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function attachHandlers(){
+      document.querySelectorAll(".buybtn").forEach(el => {
+        el.addEventListener("click", () => {
+          const name = el.getAttribute("data-name") || "Item";
+          const price = Number(el.getAttribute("data-price") || 0);
+          openPayModal(name, price);
+        });
+      });
+
+      document.querySelectorAll(".imgbtn").forEach(el => {
+        el.addEventListener("click", () => {
+          const title = el.getAttribute("data-title") || "Preview";
+          const raw = el.getAttribute("data-gallery") || "";
+          const gallery = raw ? raw.split("|").filter(Boolean) : [];
+          openGallery(gallery, title, 0);
+        });
+      });
+    }
+
+    function escapeHtml(str){
+      return (str ?? "").toString()
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+    function escapeAttr(str){
+      return escapeHtml(str).replaceAll("\n"," ");
+    }
+
+    [searchEl, categoryEl, sortEl].forEach(el => el.addEventListener("input", render));
+    resetEl.addEventListener("click", () => {
+      searchEl.value = "";
+      categoryEl.value = "all";
+      sortEl.value = "recommended";
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>
